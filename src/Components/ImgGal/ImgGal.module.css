@@ -1,0 +1,9 @@
+.gal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding-top: 60px;
+    padding-right: 30px;
+    z-index: 1;
+}
