@@ -1,40 +1,38 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import s from './Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+export const Modal = ({ children, onClose }) => {
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
 
-  handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
+    window.addEventListener('keydown', handleKeyDown);
 
-  handleOverlayClick = e => {
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+
+    };
+
+  }, [onClose]);
+
+  const handleOverlayClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      onClose();
     }
   };
-
-  render() {
-    const { children } = this.props;
-
-    return createPortal(
-      <div className={s.layer} onClick={this.handleOverlayClick}>
-        <div className={s.modal}>{children}</div>
-      </div>,
-      modalRoot
-    );
-  }
+  return createPortal(
+    <div className={s.layer} onClick={handleOverlayClick}>
+      <div className={s.modal}>{children}</div>
+    </div>,
+    modalRoot
+  );
 }
 
 export default Modal;

@@ -1,37 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import s from './Search.module.scss'
-class Search extends Component {
-    state = {
-        input: '',
-    };
-    handleChange = e => {
-        this.setState({ input: e.target.value });
+
+
+
+const Search = ({ changeSearch})=> {
+    const [input, setInput] = useState("");
+    
+    const handleChange = e => {
+        const { value } = e.target;
+    setInput(value)
     };
 
-    hendleSubmit = e => {
+  const handleSubmit = e => {
         e.preventDefault();
-        this.props.changeSearch(this.state.input);
+        changeSearch(input);
     };
 
-    render() {
+    
         return (
-            <form className={s.search} onSubmit={this.hendleSubmit}>
+            <form className={s.search} onSubmit={handleSubmit}>
 
                 <input
                     className={s.inp}
                     type="text"
                     autoComplete="off"
-                    value={this.state.input}
+                    value={input}
                     autoFocus
                     placeholder="Search"
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                 />
                 <button type="submit" className={s.btn}>
                     <span className={""}>&#128269;</span>
                 </button>
             </form>
         );
-    }
+    
 }
 
 export default Search;
